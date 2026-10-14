@@ -1,0 +1,66 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
+*.local
+
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
+
+# Vercel build output + local link
+.vercel
+
+# Secrets
+# `.env` is now ignored too. It previously carried only the URL, project id and
+# publishable key, but it pointed at a DIFFERENT Supabase project than the one
+# we deploy against -- committing it would ship the wrong backend. Production
+# configuration lives in Vercel environment variables instead; see
+# DEPLOYMENT.md. `.env.example` documents the required names.
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development.local
+*.key
+*.pem
+service-account*.json
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Leftover empty dir from the initial clone (locked by a process on Windows).
+edu/
+
+# Supabase CLI local runtime state. `.temp/` holds generated Kong / edge-runtime
+# secrets for the LOCAL stack -- real key material that must never be committed.
+supabase/.temp/
+supabase/.branches/
+
+# Stray screenshot output from an e2e run invoked without a path argument.
+undefined/
+
+# Desktop app (ADR-010): built UI and Rust output
+dist-desktop
+# Generated per build by scripts/build-desktop.mjs (this build's backend in the CSP)
+src-tauri/tauri.build.conf.json

@@ -1,0 +1,24 @@
+project_id = "gestion-ecole"
+# Local development ports, moved off the CLI defaults on purpose.
+#
+# Another project's Supabase stack already occupies 54321-54327 on this machine. The
+# defaults would collide with it, and the safe resolution is to move THIS project rather
+# than to stop something that belongs to someone else. Container names are derived from the
+# project ref and were never in conflict; only the published ports were.
+#
+# Remote deployment is unaffected: none of this is read outside `supabase start`.
+[api]
+port = 55321
+
+[db]
+port = 55322
+shadow_port = 55320
+
+[studio]
+port = 55323
+
+[inbucket]
+port = 55324
+
+[analytics]
+port = 55327

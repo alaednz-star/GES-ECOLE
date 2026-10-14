@@ -1,0 +1,532 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system — Gestion École (school management)
+ *
+ * Tokens only. Never hardcode colors in components.
+ * Dark mode values are defined but the toggle is intentionally not shipped yet.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Cairo", "Inter", ui-sans-serif, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /*
+   * BRAND MATERIAL, not a semantic colour.
+   *
+   * A school's decorative metal -- gold for a school that uses it. It is declared here, and only
+   * here, because a Tailwind v4 utility exists only if its token is in `@theme`: a runtime
+   * `:root` override can change what `bg-brand-gold` RESOLVES to, but cannot bring the
+   * class into existence. The runtime value arrives from `center_settings` through
+   * `BrandProvider`.
+   *
+   * Deliberately NOT `--accent`. `--accent` is amber because a registration is awaiting a
+   * decision; see `group-card.tsx`. Gold that took its place would repaint every pending
+   * state in the product.
+   */
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-soft: var(--brand-gold-soft);
+
+  --shadow-soft: 0 1px 2px 0 oklch(0.21 0.04 257 / 0.04), 0 1px 3px 0 oklch(0.21 0.04 257 / 0.06);
+  --shadow-card:
+    0 1px 2px oklch(0.21 0.04 257 / 0.04), 0 8px 24px -12px oklch(0.21 0.04 257 / 0.14);
+  --shadow-elevated: 0 24px 60px -24px oklch(0.21 0.04 257 / 0.28);
+  --shadow-glow: 0 20px 60px -20px oklch(0.51 0.1 180 / 0.45);
+}
+
+:root {
+  --radius: 1rem;
+
+  /* #F8FAFC */
+  --background: oklch(0.984 0.003 247.86);
+  /* #0F172A */
+  --foreground: oklch(0.208 0.042 265.75);
+  /* #FFFFFF */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.208 0.042 265.75);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.208 0.042 265.75);
+  /* #0F766E */
+  --primary: oklch(0.512 0.096 180.2);
+  --primary-foreground: oklch(0.99 0.005 180);
+  --primary-soft: oklch(0.962 0.024 180.2);
+  /* #14B8A6 */
+  --secondary: oklch(0.7 0.126 182.5);
+  --secondary-foreground: oklch(0.208 0.042 265.75);
+  --muted: oklch(0.968 0.007 247.9);
+  /* #64748B */
+  --muted-foreground: oklch(0.554 0.041 257.42);
+  /* #F59E0B */
+  --accent: oklch(0.769 0.157 70.08);
+  --accent-foreground: oklch(0.208 0.042 265.75);
+  --accent-soft: oklch(0.972 0.038 84.5);
+  /* #10B981 */
+  --success: oklch(0.696 0.149 162.48);
+  --success-foreground: oklch(0.99 0.005 160);
+  --success-soft: oklch(0.958 0.036 162.5);
+  /* #EF4444 */
+  --destructive: oklch(0.637 0.208 25.33);
+  --destructive-foreground: oklch(0.99 0.005 25);
+  --destructive-soft: oklch(0.962 0.026 25.3);
+  /* #E2E8F0 */
+  --border: oklch(0.929 0.013 255.51);
+  --input: oklch(0.929 0.013 255.51);
+  --ring: oklch(0.512 0.096 180.2);
+
+  --chart-1: oklch(0.512 0.096 180.2);
+  --chart-2: oklch(0.7 0.126 182.5);
+  --chart-3: oklch(0.769 0.157 70.08);
+  --chart-4: oklch(0.696 0.149 162.48);
+  --chart-5: oklch(0.554 0.041 257.42);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.208 0.042 265.75);
+  --sidebar-primary: oklch(0.512 0.096 180.2);
+  --sidebar-primary-foreground: oklch(0.99 0.005 180);
+  --sidebar-accent: oklch(0.962 0.024 180.2);
+  --sidebar-accent-foreground: oklch(0.512 0.096 180.2);
+  --sidebar-border: oklch(0.929 0.013 255.51);
+  --sidebar-ring: oklch(0.512 0.096 180.2);
+
+  --gradient-brand: linear-gradient(135deg, var(--primary), var(--secondary));
+  --gradient-surface: linear-gradient(180deg, oklch(1 0 0), oklch(0.984 0.003 247.86));
+
+  /*
+   * The product has no gold of its own, so unbranded the decorative material IS the primary.
+   * `var(--primary)` rather than a copied value, so this follows the light/dark override
+   * on the same element and an unbranded deployment renders exactly as it did before this
+   * token existed.
+   */
+  --brand-gold: var(--primary);
+  --brand-gold-soft: var(--primary-soft);
+}
+
+/* Dark mode architecture is prepared; no toggle is exposed yet. */
+.dark {
+  --background: oklch(0.19 0.03 260);
+  --foreground: oklch(0.98 0.003 247.86);
+  --card: oklch(0.235 0.032 262);
+  --card-foreground: oklch(0.98 0.003 247.86);
+  --popover: oklch(0.235 0.032 262);
+  --popover-foreground: oklch(0.98 0.003 247.86);
+  --primary: oklch(0.7 0.126 182.5);
+  --primary-foreground: oklch(0.19 0.03 260);
+  --primary-soft: oklch(0.3 0.05 185);
+  --secondary: oklch(0.512 0.096 180.2);
+  --secondary-foreground: oklch(0.98 0.003 247.86);
+  --muted: oklch(0.28 0.03 260);
+  --muted-foreground: oklch(0.72 0.03 257);
+  --accent: oklch(0.769 0.157 70.08);
+  --accent-foreground: oklch(0.19 0.03 260);
+  --accent-soft: oklch(0.33 0.06 75);
+  --success: oklch(0.696 0.149 162.48);
+  --success-foreground: oklch(0.19 0.03 260);
+  --success-soft: oklch(0.3 0.05 162);
+  --destructive: oklch(0.637 0.208 25.33);
+  --destructive-foreground: oklch(0.98 0.003 247.86);
+  --destructive-soft: oklch(0.32 0.07 25);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.7 0.126 182.5);
+  --sidebar: oklch(0.215 0.03 261);
+  --sidebar-foreground: oklch(0.98 0.003 247.86);
+  --sidebar-primary: oklch(0.7 0.126 182.5);
+  --sidebar-primary-foreground: oklch(0.19 0.03 260);
+  --sidebar-accent: oklch(0.3 0.05 185);
+  --sidebar-accent-foreground: oklch(0.9 0.05 182);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.7 0.126 182.5);
+
+  --gradient-surface: linear-gradient(180deg, oklch(0.235 0.032 262), oklch(0.19 0.03 260));
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :lang(ar) body,
+  [dir="rtl"] body {
+    font-family: var(--font-arabic);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-surface {
+  background-image: var(--gradient-surface);
+}
+
+@utility text-gradient-brand {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  color: transparent;
+}
+
+@utility surface-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+}
+
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Card variants.
+   `surface-card` stays the neutral default. These express PURPOSE, so a
+   teacher can tell at a glance what a block is for before reading it. All
+   derive from existing brand tokens -- no new hues enter the system.
+   --------------------------------------------------------------------------- */
+
+/* ONE elevated surface per page: the hero. Everything else sits flat, so
+   elevation itself signals "this is the most important thing here". */
+@utility surface-hero {
+  background-image: linear-gradient(
+    152deg,
+    color-mix(in oklch, var(--color-primary) 11%, var(--color-card)),
+    var(--color-card) 62%
+  );
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Secondary panels. No border and no shadow: separation comes from the tinted
+   page behind them. 34 bordered elements is what made the page read as a grid
+   of boxes rather than a document. */
+@utility surface-panel {
+  background-color: var(--color-card);
+  border-radius: var(--radius-2xl);
+}
+
+/* Rows inside a panel. Tint only -- borders here would re-create the noise the
+   panel just removed. */
+@utility surface-row {
+  background-color: color-mix(in oklch, var(--color-muted) 55%, transparent);
+  border-radius: var(--radius-lg);
+}
+
+/* Something is owed. A 3px start-edge marker instead of a full outline: the eye
+   catches the rhythm of markers down the list far faster than four boxes. */
+@utility surface-alert {
+  background-color: color-mix(in oklch, var(--color-accent) 8%, var(--color-card));
+  border-inline-start: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+}
+
+/* Resolved. Recedes deliberately -- good news needs no emphasis. */
+@utility surface-done {
+  background-color: color-mix(in oklch, var(--color-success) 7%, var(--color-card));
+  border-radius: var(--radius-lg);
+}
+
+/* Launchpad tiles: invisible at rest, surfacing on hover. */
+@utility surface-action {
+  border-radius: var(--radius-lg);
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    background-color: color-mix(in oklch, var(--color-muted) 70%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+/* The session happening right now. The only element besides the hero that
+   carries a shadow, which is what makes it read as "live". */
+@utility surface-live {
+  background-color: color-mix(in oklch, var(--color-primary) 9%, var(--color-card));
+  border-inline-start: 3px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Respect the OS setting: every transition above collapses to nothing. */
+@media (prefers-reduced-motion: reduce) {
+  .surface-action,
+  .surface-action:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@utility animate-float {
+  animation: float 7s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ------------------------- premium landing motion ------------------------- */
+
+@utility animate-grow {
+  animation: grow-bar 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes grow-bar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@utility animate-float-slow {
+  animation: float 11s ease-in-out infinite;
+}
+
+@utility animate-float-delayed {
+  animation: float 9s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+@utility reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Reduced motion sees the content, not the absence of it.
+ *
+ * `.reveal` starts at `opacity: 0` and waits for an IntersectionObserver. The global
+ * reduced-motion rule below only shortens durations, so a reader who has asked for less
+ * motion still depends on the observer firing to see anything at all. That was tolerable
+ * when the page was a product tour; the same markup now carries a school's description of
+ * itself on its public site, where the text arriving is not a nice-to-have.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility glass-panel {
+  background-color: color-mix(in oklab, var(--color-card) 72%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: var(--shadow-card);
+}
+
+@utility hero-glow {
+  background: radial-gradient(
+    60% 55% at 50% 40%,
+    color-mix(in oklab, var(--secondary) 40%, transparent) 0%,
+    color-mix(in oklab, var(--primary) 18%, transparent) 45%,
+    transparent 72%
+  );
+}
+
+@utility grid-backdrop {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-border) 70%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-border) 70%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  mask-image: radial-gradient(70% 60% at 50% 35%, black, transparent 75%);
+}
+
+@utility perspective-hero {
+  perspective: 1800px;
+  perspective-origin: 50% 20%;
+}
+
+/* ------------------------- printed documents -------------------------
+ *
+ * A roster is an administrative document, not a screenshot of the app. On paper the shell
+ * -- sidebar, header, toaster, every control -- is noise, so everything is hidden and only
+ * the element carrying `data-roster-print` is shown, promoted to the top of the page.
+ *
+ * The rules live here rather than beside the component because `@media print` has to reach
+ * `body` and the application shell, which no component owns.
+ */
+@media print {
+  /* Ink, not brand colour: a school prints in black on white. */
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+  }
+
+  body {
+    background: #ffffff !important;
+  }
+
+  /* Hide the application, keep only the document and its ancestors. */
+  body * {
+    visibility: hidden;
+  }
+
+  [data-roster-print],
+  [data-roster-print] *,
+  [data-print-document],
+  [data-print-document] * {
+    visibility: visible;
+  }
+
+  /* Financial documents (receipts, invoices, reports -- ADR-006): the same rule, keeping their
+     own padding, and colours as on screen (the voided stamp, the totals band). */
+  [data-print-document] {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    width: 100%;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  [data-print-document] tr {
+    break-inside: avoid;
+  }
+
+  [data-roster-print] {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  /* A long roster breaks across pages; the header row repeats via `thead`. */
+  [data-roster-print] thead {
+    display: table-header-group;
+  }
+
+  [data-roster-print] tr {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}

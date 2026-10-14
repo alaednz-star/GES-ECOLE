@@ -1,0 +1,30 @@
+[package]
+name = "gestion-ecole"
+version = "1.0.0"
+description = "Gestion École -- application de bureau Windows (ADR-010)"
+authors = ["Gestion École"]
+license = ""
+repository = ""
+edition = "2021"
+rust-version = "1.80"
+
+[lib]
+name = "gestion_ecole_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+
+[profile.release]
+# Smaller installer and faster start; panics abort instead of unwinding.
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

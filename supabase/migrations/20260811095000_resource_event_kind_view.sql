@@ -1,0 +1,30 @@
+-- ==================================================================
+-- `resource_event_kind` gains `view`
+--
+-- ONE STATEMENT, ITS OWN MIGRATION, AND THAT IS THE ENTIRE POINT.
+--
+-- Postgres allows `alter type ... add value` inside a transaction, but it refuses
+-- to let that value be USED until the transaction that added it has committed:
+--
+--   ERROR:  unsafe use of new value "view" of enum type resource_event_kind
+--   HINT:   New enum values must be committed before they can be used.
+--
+-- `supabase db push` runs each migration file in a single transaction. The next
+-- migration adds the value and then migrates the existing `open` rows to it, so
+-- keeping both in one file makes the push fail -- and fail *conditionally*, only
+-- when there is at least one row to migrate, because the check is evaluated per
+-- row. A no-op update passes. That is the worst kind of migration bug: it works on
+-- an empty table and breaks on real data.
+--
+-- Splitting it means this file commits first and the value is usable in the next.
+--
+-- No exception handler here on purpose. An earlier draft wrapped this in
+-- `exception when others then null`, which would also have swallowed a genuine
+-- failure and left the following migration to fail somewhere less obvious.
+-- `if not exists` already makes it safe to re-run.
+--
+-- `open` is deliberately left in the enum: Postgres cannot remove a value that is
+-- in use, and after the next migration nothing writes it.
+-- ==================================================================
+
+alter type public.resource_event_kind add value if not exists 'view';

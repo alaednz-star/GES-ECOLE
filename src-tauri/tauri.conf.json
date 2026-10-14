@@ -1,0 +1,47 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "Gestion École",
+  "version": "1.0.0",
+  "identifier": "dz.gestionecole.desktop",
+  "build": {
+    "frontendDist": "../dist-desktop",
+    "devUrl": "http://localhost:1420"
+  },
+  "app": {
+    "windows": [],
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "base-uri": "'self'",
+        "object-src": "'none'",
+        "form-action": "'self'",
+        "script-src": "'self' 'unsafe-inline'",
+        "style-src": "'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src": "'self' https://fonts.gstatic.com data:",
+        "img-src": "'self' data: blob: https://i.ytimg.com",
+        "media-src": "'self' blob:",
+        "connect-src": "'self' ipc: http://ipc.localhost",
+        "frame-src": "'self' https://www.youtube-nocookie.com https://player.vimeo.com https://drive.google.com https://docs.google.com https://*.dropbox.com"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "msi"],
+    "publisher": "Gestion École",
+    "shortDescription": "Gestion scolaire pour centres de soutien",
+    "longDescription": "Gestion École : élèves, groupes, présences, pédagogie, finances et communication, avec un mode hors ligne.",
+    "category": "Education",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "webviewInstallMode": { "type": "downloadBootstrapper" },
+      "nsis": { "languages": ["French", "Arabic", "English"], "displayLanguageSelector": true }
+    }
+  }
+}

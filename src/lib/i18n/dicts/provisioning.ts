@@ -1,0 +1,141 @@
+import type { DictionaryModule } from "../types";
+
+/** Admin-provisioned teacher accounts and the forced password change. */
+export const provisioning: DictionaryModule = {
+  fr: {
+    "teachers.create.action": "Nouvel enseignant",
+    "teachers.create.title": "Créer un compte enseignant",
+    "teachers.create.intro":
+      "Un mot de passe temporaire sera généré. L'enseignant devra le changer à sa première connexion.",
+    "teachers.create.firstName": "Prénom",
+    "teachers.create.lastName": "Nom",
+    "teachers.create.email": "Adresse e-mail",
+    "teachers.create.emailHint": "Servira d'identifiant de connexion.",
+    "teachers.create.phone": "Téléphone",
+    "teachers.create.notes": "Notes",
+    "teachers.create.subjectsHint": "L'enseignant ne pourra être affecté qu'à ces matières.",
+    "teachers.create.submit": "Créer le compte",
+    "teachers.create.creating": "Création…",
+    "teachers.create.nameRequired": "Indiquez le prénom et le nom.",
+    "teachers.create.emailInvalid": "Adresse e-mail invalide.",
+
+    "teachers.credentials.title": "Compte enseignant créé",
+    "teachers.credentials.warning":
+      "Notez ce mot de passe maintenant : il ne sera plus jamais affiché. Transmettez-le à l'enseignant de façon sécurisée.",
+    "teachers.credentials.name": "Enseignant",
+    "teachers.credentials.email": "E-mail",
+    "teachers.credentials.password": "Mot de passe temporaire",
+    "teachers.credentials.copy": "Copier",
+    "teachers.credentials.copied": "Copié",
+    "teachers.credentials.print": "Imprimer",
+    "teachers.credentials.close": "Fermer",
+    "teachers.credentials.printBlocked":
+      "L'impression a été bloquée par le navigateur. Autorisez les fenêtres contextuelles.",
+    "teachers.credentials.printNote":
+      "Mot de passe temporaire — à changer à la première connexion. Détruisez ce document après remise.",
+
+    "changePassword.title": "Changez votre mot de passe",
+    "changePassword.body":
+      "Votre compte utilise un mot de passe temporaire. Choisissez-en un nouveau pour continuer.",
+    "changePassword.current": "Mot de passe actuel",
+    "changePassword.new": "Nouveau mot de passe",
+    "changePassword.confirm": "Confirmer le mot de passe",
+    "changePassword.hint": "{min} caractères minimum. Évitez les mots courants.",
+    "changePassword.submit": "Changer le mot de passe",
+    "changePassword.tooShort": "Le mot de passe doit contenir au moins {min} caractères.",
+    "changePassword.mismatch": "Les deux mots de passe ne correspondent pas.",
+    "changePassword.sameAsCurrent": "Le nouveau mot de passe doit être différent de l'actuel.",
+    "changePassword.currentWrong": "Mot de passe actuel incorrect.",
+    "changePassword.done": "Mot de passe modifié.",
+  },
+
+  ar: {
+    "teachers.create.action": "أستاذ جديد",
+    "teachers.create.title": "إنشاء حساب أستاذ",
+    "teachers.create.intro": "سيتم توليد كلمة مرور مؤقتة. على الأستاذ تغييرها عند أول تسجيل دخول.",
+    "teachers.create.firstName": "الاسم",
+    "teachers.create.lastName": "اللقب",
+    "teachers.create.email": "البريد الإلكتروني",
+    "teachers.create.emailHint": "سيُستخدم لتسجيل الدخول.",
+    "teachers.create.phone": "الهاتف",
+    "teachers.create.notes": "ملاحظات",
+    "teachers.create.subjectsHint": "لن يُسند الأستاذ إلا إلى هذه المواد.",
+    "teachers.create.submit": "إنشاء الحساب",
+    "teachers.create.creating": "جارٍ الإنشاء…",
+    "teachers.create.nameRequired": "أدخل الاسم واللقب.",
+    "teachers.create.emailInvalid": "بريد إلكتروني غير صالح.",
+
+    "teachers.credentials.title": "تم إنشاء حساب الأستاذ",
+    "teachers.credentials.warning":
+      "دوّن كلمة المرور الآن: لن تُعرض مرة أخرى. سلّمها للأستاذ بطريقة آمنة.",
+    "teachers.credentials.name": "الأستاذ",
+    "teachers.credentials.email": "البريد الإلكتروني",
+    "teachers.credentials.password": "كلمة المرور المؤقتة",
+    "teachers.credentials.copy": "نسخ",
+    "teachers.credentials.copied": "تم النسخ",
+    "teachers.credentials.print": "طباعة",
+    "teachers.credentials.close": "إغلاق",
+    "teachers.credentials.printBlocked": "تم حظر الطباعة من طرف المتصفح. اسمح بالنوافذ المنبثقة.",
+    "teachers.credentials.printNote":
+      "كلمة مرور مؤقتة — يجب تغييرها عند أول تسجيل دخول. أتلف هذه الوثيقة بعد التسليم.",
+
+    "changePassword.title": "غيّر كلمة المرور",
+    "changePassword.body": "حسابك يستعمل كلمة مرور مؤقتة. اختر كلمة مرور جديدة للمتابعة.",
+    "changePassword.current": "كلمة المرور الحالية",
+    "changePassword.new": "كلمة المرور الجديدة",
+    "changePassword.confirm": "تأكيد كلمة المرور",
+    "changePassword.hint": "{min} أحرف على الأقل. تجنّب الكلمات الشائعة.",
+    "changePassword.submit": "تغيير كلمة المرور",
+    "changePassword.tooShort": "يجب أن تحتوي كلمة المرور على {min} أحرف على الأقل.",
+    "changePassword.mismatch": "كلمتا المرور غير متطابقتين.",
+    "changePassword.sameAsCurrent": "يجب أن تختلف كلمة المرور الجديدة عن الحالية.",
+    "changePassword.currentWrong": "كلمة المرور الحالية غير صحيحة.",
+    "changePassword.done": "تم تغيير كلمة المرور.",
+  },
+
+  en: {
+    "teachers.create.action": "New teacher",
+    "teachers.create.title": "Create a teacher account",
+    "teachers.create.intro":
+      "A temporary password will be generated. The teacher must change it at first sign-in.",
+    "teachers.create.firstName": "First name",
+    "teachers.create.lastName": "Last name",
+    "teachers.create.email": "Email address",
+    "teachers.create.emailHint": "Used as the sign-in identifier.",
+    "teachers.create.phone": "Phone",
+    "teachers.create.notes": "Notes",
+    "teachers.create.subjectsHint": "The teacher can only be assigned to these subjects.",
+    "teachers.create.submit": "Create account",
+    "teachers.create.creating": "Creating…",
+    "teachers.create.nameRequired": "Enter both first and last name.",
+    "teachers.create.emailInvalid": "That email address isn't valid.",
+
+    "teachers.credentials.title": "Teacher account created",
+    "teachers.credentials.warning":
+      "Save this password now — it will never be shown again. Share it with the teacher securely.",
+    "teachers.credentials.name": "Teacher",
+    "teachers.credentials.email": "Email",
+    "teachers.credentials.password": "Temporary password",
+    "teachers.credentials.copy": "Copy",
+    "teachers.credentials.copied": "Copied",
+    "teachers.credentials.print": "Print",
+    "teachers.credentials.close": "Close",
+    "teachers.credentials.printBlocked":
+      "Printing was blocked by the browser. Allow pop-ups and try again.",
+    "teachers.credentials.printNote":
+      "Temporary password — must be changed at first sign-in. Destroy this sheet after handover.",
+
+    "changePassword.title": "Change your password",
+    "changePassword.body": "Your account uses a temporary password. Choose a new one to continue.",
+    "changePassword.current": "Current password",
+    "changePassword.new": "New password",
+    "changePassword.confirm": "Confirm password",
+    "changePassword.hint": "{min} characters minimum. Avoid common words.",
+    "changePassword.submit": "Change password",
+    "changePassword.tooShort": "Password must be at least {min} characters.",
+    "changePassword.mismatch": "The two passwords don't match.",
+    "changePassword.sameAsCurrent": "The new password must differ from the current one.",
+    "changePassword.currentWrong": "Current password is incorrect.",
+    "changePassword.done": "Password changed.",
+  },
+};
