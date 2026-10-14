@@ -2,7 +2,7 @@
  * Desktop offline mode, runtime (ADR-010). Desktop build only; the web app never calls this.
  *
  * - The query cache is saved to IndexedDB, so what the user saw stays readable without internet
- *   (30 days, dropped when the app version changes, cleared on sign-out).
+ *   (`OFFLINE_CACHE_MAX_AGE`, dropped when the app version changes, cleared on sign-out).
  * - The four classroom writes (`OFFLINE_MUTATIONS`) wait for the connection. Their request
  *   functions are registered as mutation defaults, so a write queued before the app was closed is
  *   still sent after it reopens.
@@ -16,6 +16,7 @@ import { del, get, set } from "idb-keyval";
 import { IS_DESKTOP } from "@/lib/desktop";
 import { supabaseRestConfig } from "@/integrations/supabase/client";
 import { startProbe } from "./connectivity";
+import { readCachedUser } from "./user-cache";
 import { saveAttendanceEntries } from "@/features/school/queries";
 import { saveLessonEntryRequest, saveScoresRequest } from "@/features/pedagogy/queries";
 import { sendMessageRequest } from "@/features/communication/queries";
@@ -27,14 +28,18 @@ const CACHE_KEY = "gestion-ecole.query-cache";
 const CACHE_BUSTER = "desktop-1";
 
 const persister: Persister = {
-  persistClient: (client: PersistedClient) => set(CACHE_KEY, client),
+  // Saved only while someone is signed in. Every cache change triggers a save, including the
+  // clearing done at sign-out and the login page's own query afterwards: without this gate those
+  // saves would write the cache straight back after sign-out deleted it. Sign-out removes the
+  // saved user first (supabase-auth-service), so no later save can recreate the file.
+  persistClient: (client: PersistedClient) =>
+    readCachedUser() ? set(CACHE_KEY, client) : Promise.resolve(),
   restoreClient: () => get<PersistedClient>(CACHE_KEY),
   removeClient: () => del(CACHE_KEY),
 };
 
 /** Drops the saved cache (sign-out: the next person on this computer must not see it). */
 export function clearOfflineCache(queryClient: QueryClient): Promise<void> {
-  console.info('[trace] clearOfflineCache', new Error().stack);
   queryClient.clear();
   return del(CACHE_KEY);
 }
@@ -42,7 +47,9 @@ export function clearOfflineCache(queryClient: QueryClient): Promise<void> {
 export function setupDesktopOffline(queryClient: QueryClient): void {
   if (!IS_DESKTOP || typeof window === "undefined") return;
 
-  queryClient.setMutationDefaults(OFFLINE_MUTATIONS.attendance, { mutationFn: saveAttendanceEntries });
+  queryClient.setMutationDefaults(OFFLINE_MUTATIONS.attendance, {
+    mutationFn: saveAttendanceEntries,
+  });
   queryClient.setMutationDefaults(OFFLINE_MUTATIONS.sessionAttendance, {
     mutationFn: (input: SaveSessionInput) =>
       saveAttendanceEntries({
@@ -52,7 +59,9 @@ export function setupDesktopOffline(queryClient: QueryClient): void {
         entries: input.entries,
       }),
   });
-  queryClient.setMutationDefaults(OFFLINE_MUTATIONS.lessonEntry, { mutationFn: saveLessonEntryRequest });
+  queryClient.setMutationDefaults(OFFLINE_MUTATIONS.lessonEntry, {
+    mutationFn: saveLessonEntryRequest,
+  });
   queryClient.setMutationDefaults(OFFLINE_MUTATIONS.scores, { mutationFn: saveScoresRequest });
   queryClient.setMutationDefaults(OFFLINE_MUTATIONS.message, { mutationFn: sendMessageRequest });
 
@@ -64,7 +73,9 @@ export function setupDesktopOffline(queryClient: QueryClient): void {
     // Keep every query that HAS data, not only the last successful ones: offline, a refresh fails
     // and the query turns "error" while still holding its data -- the default would then drop it
     // from the saved cache, erasing exactly what offline use depends on.
-    dehydrateOptions: { shouldDehydrateQuery: (query: { state: { data: unknown } }) => query.state.data !== undefined },
+    dehydrateOptions: {
+      shouldDehydrateQuery: (query: { state: { data: unknown } }) => query.state.data !== undefined,
+    },
   };
   // Restore FIRST, then start saving: saving before the restore would overwrite the saved cache
   // with the empty state of a fresh start.
@@ -93,7 +104,6 @@ async function restoreCache(queryClient: QueryClient): Promise<void> {
     console.error("[offline] could not read the saved cache", error);
     return;
   }
-  console.info('[trace] saved?', !!saved, saved && saved.clientState.queries.length, saved && saved.buster, saved && (Date.now()-saved.timestamp));
   if (!saved) return;
   const expired = !saved.timestamp || Date.now() - saved.timestamp > OFFLINE_CACHE_MAX_AGE;
   if (expired || saved.buster !== CACHE_BUSTER) {
@@ -102,7 +112,6 @@ async function restoreCache(queryClient: QueryClient): Promise<void> {
   }
   try {
     hydrate(queryClient, saved.clientState);
-    console.info('[trace] hydrated, cache now', queryClient.getQueryCache().getAll().length);
   } catch (error) {
     console.error("[offline] could not restore the saved cache", error);
   }

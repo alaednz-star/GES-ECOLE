@@ -475,6 +475,16 @@ notifications → a profile;  student_notes → student + author;  audit_log →
 ## 10. Do-not-break rules
 
 - Do not introduce multi-tenancy or a `school_id` into this repository.
+- Desktop offline cache (`src/features/desktop/`): keep `OFFLINE_CACHE_MAX_AGE` (the
+  persister's `maxAge` AND the desktop `gcTime`) at or below `MAX_TIMER_DELAY` (2^31-1 ms,
+  ~24.8 days). A longer `gcTime` overflows `setTimeout`, fires at once and deletes every
+  restored query after an offline restart (the 30-day bug, fixed 2026-10-14; regression tests in
+  `offline-model.test.ts`). And keep `gcTime: Infinity` when `window` is undefined in the
+  desktop build (`router.tsx`): the build prerenders the start page in Node, and a valid long
+  timer keeps the build process alive.
+- Desktop offline cache is saved only while a user is signed in (`persistClient` gated on
+  `readCachedUser()`); sign-out clears the saved user BEFORE clearing the cache, so no later
+  save can recreate it. Verified by `verify-desktop-offline.mjs` (16/16).
 - Do not point this repo, `.env`, or the Supabase CLI at any other project ref.
 - Do not read roles from `raw_user_meta_data`; do not send a role from the client.
 - Do not insert into `students`/`teachers`/`user_roles` except via `provision_staff`/`grant_role`.

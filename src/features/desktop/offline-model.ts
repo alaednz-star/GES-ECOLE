@@ -76,5 +76,16 @@ export function summarize(mutations: MutationSnapshot[]): PendingSummary {
   return out;
 }
 
-/** How long the offline cache is kept (also the queries' gcTime in the desktop app). */
-export const OFFLINE_CACHE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
+/** The longest delay a browser timer accepts: 2^31 - 1 ms (about 24.8 days). */
+export const MAX_TIMER_DELAY = 2_147_483_647;
+
+/**
+ * How long the saved offline cache stays usable, and the queries' `gcTime` in the desktop app.
+ *
+ * The two are the same value on purpose: a query garbage-collected before it is saved is lost.
+ * And it must stay below MAX_TIMER_DELAY. TanStack Query schedules garbage collection with
+ * `setTimeout`, and a longer delay does not wait -- it fires at once. With the previous value
+ * (30 days) every query restored after an offline restart was deleted the moment it was
+ * restored, unless a screen was already showing it, and the next save overwrote the good cache.
+ */
+export const OFFLINE_CACHE_MAX_AGE = 14 * 24 * 60 * 60 * 1000;

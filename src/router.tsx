@@ -28,8 +28,14 @@ export const getRouter = () => {
         // Reference data (levels, subjects) changes rarely; without this every
         // mount and every window focus refetched it.
         staleTime: 60_000,
-        // The desktop app keeps its cache (saved to disk) for offline use.
-        gcTime: IS_DESKTOP ? OFFLINE_CACHE_MAX_AGE : 5 * 60_000,
+        // The desktop app keeps its cache (saved to disk) for offline use. Only in its window:
+        // the desktop build also renders the start page in Node, where a long-lived
+        // garbage-collection timer would keep the build process running -- no timer there.
+        gcTime: IS_DESKTOP
+          ? typeof window === "undefined"
+            ? Infinity
+            : OFFLINE_CACHE_MAX_AGE
+          : 5 * 60_000,
         // Desktop: show what is cached right away and fetch when the network allows.
         ...(IS_DESKTOP ? { networkMode: "offlineFirst" as const } : {}),
         retry: (failureCount, error) => failureCount < MAX_QUERY_RETRIES && isRetriableError(error),
