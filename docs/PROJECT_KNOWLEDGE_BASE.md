@@ -482,6 +482,10 @@ notifications → a profile;  student_notes → student + author;  audit_log →
   `offline-model.test.ts`). And keep `gcTime: Infinity` when `window` is undefined in the
   desktop build (`router.tsx`): the build prerenders the start page in Node, and a valid long
   timer keeps the build process alive.
+- **Open desktop gap (release blocker, 2026-10-14):** links built from `window.location.origin`
+  (password reset, staff account setup, sign-up confirmation, copied registration links) are
+  `http://tauri.localhost/...` inside the desktop app. They must use the web deployment's address
+  (`VITE_SERVER_ORIGIN`) in desktop builds. List of call sites: DEPLOYMENT.md §9.
 - Desktop offline cache is saved only while a user is signed in (`persistClient` gated on
   `readCachedUser()`); sign-out clears the saved user BEFORE clearing the cache, so no later
   save can recreate it. Verified by `verify-desktop-offline.mjs` (16/16).
