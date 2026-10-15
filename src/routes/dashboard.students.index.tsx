@@ -38,6 +38,7 @@ import type { EntityStatus, StudentRow } from "@/features/school/types";
 import { exportCsv } from "@/lib/export-csv";
 import { useI18n } from "@/hooks/use-i18n";
 import { useActionFeedback } from "@/hooks/use-action-feedback";
+import { publicUrl } from "@/lib/desktop";
 
 export const Route = createFileRoute("/dashboard/students/")({
   head: () => ({
@@ -108,7 +109,7 @@ function StudentsPage() {
 
   const copyInviteLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/register`);
+      await navigator.clipboard.writeText(publicUrl("/register"));
       notifySuccess("entity.students.inviteLinkCopied");
     } catch {
       toast.error(t("entity.common.copyFail"));

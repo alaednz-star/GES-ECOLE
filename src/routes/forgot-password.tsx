@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { authService } from "@/services/auth";
 import { useI18n } from "@/hooks/use-i18n";
 import { useActionFeedback } from "@/hooks/use-action-feedback";
+import { publicUrl } from "@/lib/desktop";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
@@ -35,7 +36,7 @@ function ForgotPasswordPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await authService.requestPasswordReset(email, `${window.location.origin}/reset-password`);
+      await authService.requestPasswordReset(email, publicUrl("/reset-password"));
       setSent(true);
       toast.success(t("auth.linkSent"));
     } catch (err) {

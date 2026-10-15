@@ -21,8 +21,8 @@ one school; nothing is shared between schools, and no earlier project or credent
 | 9 | Verify the deployment | §8 |
 | 10 | Build and check the Windows installers against the deployed endpoints | §9 |
 
-**Before a desktop release:** the known issue in §9 ("links created from the desktop app")
-must be fixed first.
+**Before a desktop release:** the web deployment (§5) must exist; the installers are built
+against its address.
 
 ---
 
@@ -235,15 +235,12 @@ The desktop app is the same interface packaged with Tauri 2. It talks to the sch
 project directly (publishable key, RLS) and sends server-function calls to the web deployment
 from §5.
 
-**Known issue — fix before a desktop release: links created from the desktop app.** Inside the
-desktop window the page origin is `http://tauri.localhost`, and several links are built from it:
-password-reset requests (`src/routes/forgot-password.tsx`, `src/routes/dashboard.profile.tsx`),
-staff account-setup links (`src/routes/dashboard.users.tsx` → `provisioning.server.ts`), the
-sign-up confirmation link (`src/services/auth/supabase-auth-service.ts`) and the copied
-registration / pre-registration links (`enrollment-dialogs.tsx`, `dashboard.students.index.tsx`,
-`dashboard.teachers.index.tsx`, `public-link-card.tsx`). From the desktop app they would point at
-an address that exists only inside the app. They must use the web deployment's address
-(`VITE_SERVER_ORIGIN`, already set in desktop builds). The web app is not affected.
+**Links created from the desktop app** (password reset, staff account setup, sign-up
+confirmation, copied registration and pre-registration links) point at the web deployment
+(`DESKTOP_SERVER_ORIGIN`), not at the app's internal origin `http://tauri.localhost`:
+`publicUrl()` / `publicOrigin()` in `src/lib/desktop.ts`, rules in `src/lib/public-url.ts`. The
+web app keeps using its own address. That deployment's address must be in Supabase Auth's
+redirect URLs (§4).
 
 **Prerequisites on the build machine:** Node ≥ 22.12, Rust (MSVC), Visual Studio C++ build
 tools, WebView2 (see LOCAL_SETUP.md). The installers use the WebView2 download bootstrapper:

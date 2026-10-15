@@ -50,6 +50,7 @@ import { useActionFeedback } from "@/hooks/use-action-feedback";
 import { useI18n } from "@/hooks/use-i18n";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { publicOrigin } from "@/lib/desktop";
 
 export const Route = createFileRoute("/dashboard/users")({
   head: () => ({
@@ -129,7 +130,7 @@ function UsersPage() {
       const accessToken = await currentAccessToken();
       if (!accessToken) throw new Error(t("dash.users.sessionExpired"));
       const res = await sendRecoveryFn({
-        data: { accessToken, userId, origin: window.location.origin },
+        data: { accessToken, userId, origin: publicOrigin() },
       });
       if (!res.ok) throw new Error(res.message);
       return res.sent;
@@ -331,7 +332,7 @@ function CreateAdminDialog({
           accessToken,
           fullName: fullName.trim(),
           email: email.trim(),
-          origin: window.location.origin,
+          origin: publicOrigin(),
         },
       });
       if (!res.ok) {

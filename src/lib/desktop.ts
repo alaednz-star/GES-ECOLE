@@ -1,3 +1,5 @@
+import { publicOriginFor, publicUrlFor } from "./public-url";
+
 /**
  * The Windows desktop app (ADR-010): constants shared by the web server, which must accept the
  * app's server-function calls, and the app itself.
@@ -16,3 +18,20 @@ export const IS_DESKTOP = import.meta.env.VITE_DESKTOP === "true";
 
 /** The online server the desktop app sends server-function calls to. */
 export const SERVER_ORIGIN: string = import.meta.env.VITE_SERVER_ORIGIN ?? "";
+
+/**
+ * The origin for links that leave the app (e-mail redirects, shared registration links): the page
+ * itself in the browser, the web deployment in the desktop app. Browser-side only.
+ */
+export function publicOrigin(): string {
+  return publicOriginFor({
+    isDesktop: IS_DESKTOP,
+    serverOrigin: SERVER_ORIGIN,
+    pageOrigin: window.location.origin,
+  });
+}
+
+/** `path` (e.g. `/reset-password`) on `publicOrigin()`. */
+export function publicUrl(path: string): string {
+  return publicUrlFor(publicOrigin(), path);
+}

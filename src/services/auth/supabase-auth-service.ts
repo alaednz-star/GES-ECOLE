@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { AuthSession, AuthUser, Credentials, RegisterPayload, Role } from "@/types/auth";
 import type { AuthService } from "./auth-service";
 import { isAuthRetryableFetchError } from "@supabase/supabase-js";
-import { IS_DESKTOP } from "@/lib/desktop";
+import { IS_DESKTOP, publicUrl } from "@/lib/desktop";
 import { clearCachedUser, readCachedUser, writeCachedUser } from "@/features/desktop/user-cache";
 
 async function hydrate(userId: string, email: string | undefined): Promise<AuthUser> {
@@ -75,7 +75,7 @@ export const supabaseAuthService: AuthService = {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/login`,
+        emailRedirectTo: publicUrl("/login"),
         // No role: `user_metadata` is writable by the account holder, so it must
         // never carry authorisation input. handle_new_user() assigns `student`
         // unconditionally; elevation is admin-only via private.grant_role().

@@ -56,6 +56,7 @@ import {
   CredentialsDialog,
   type Credentials,
 } from "@/features/teachers/components/credentials-dialog";
+import { publicUrl } from "@/lib/desktop";
 
 export const Route = createFileRoute("/dashboard/teachers/")({
   head: () => ({
@@ -236,7 +237,7 @@ function TeachersPage() {
 
   const copyInviteLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/register`);
+      await navigator.clipboard.writeText(publicUrl("/register"));
       notifySuccess("entity.teachers.inviteLinkCopied");
     } catch {
       toast.error(t("entity.common.copyFail"));

@@ -20,6 +20,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/hooks/use-i18n";
 import { useActionFeedback } from "@/hooks/use-action-feedback";
 import { formatDate, initialsOf } from "@/lib/format";
+import { publicUrl } from "@/lib/desktop";
 
 export const Route = createFileRoute("/dashboard/profile")({
   head: () => ({
@@ -142,10 +143,7 @@ function ProfilePage() {
     if (!user?.email || sendingReset) return;
     setSendingReset(true);
     try {
-      await authService.requestPasswordReset(
-        user.email,
-        `${window.location.origin}/reset-password`,
-      );
+      await authService.requestPasswordReset(user.email, publicUrl("/reset-password"));
       notifySuccess("profile.resetSent");
     } catch (e) {
       notifyError(e);

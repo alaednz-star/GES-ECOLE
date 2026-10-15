@@ -11,10 +11,7 @@ import { Check, Copy, Download, ExternalLink, Loader2 } from "lucide-react";
 import { SectionCard } from "@/components/common/section-card";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/hooks/use-i18n";
-
-function publicPreRegistrationUrl(origin: string, programId: string): string {
-  return `${origin.replace(/\/$/, "")}/preinscription/${programId}`;
-}
+import { publicUrl } from "@/lib/desktop";
 
 function fileName(name: string): string {
   const slug = name
@@ -43,7 +40,7 @@ export function PublicLinkCard({
 
   // The origin is only known in the browser; the QR code is drawn there too.
   useEffect(() => {
-    const link = publicPreRegistrationUrl(window.location.origin, programId);
+    const link = publicUrl(`/preinscription/${encodeURIComponent(programId)}`);
     setUrl(link);
     let cancelled = false;
     void import("qrcode").then(({ default: QRCode }) =>
